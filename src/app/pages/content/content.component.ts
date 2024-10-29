@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { fakeData } from '../../data/fakeData';
 
 @Component({
   selector: 'app-content',
@@ -12,4 +13,22 @@ export class ContentComponent {
   picture: string = '';
   title: string = '';
   description: string = '';
+
+  private id: string | null = '0';
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(value => this.id = value.get('id'));
+
+    this.setValuesToComponent(this.id);
+  }
+
+  setValuesToComponent(id: string | null) {
+    const result = fakeData.filter((article) => article.id == id)[0];
+
+    this.picture = result.picture
+    this.title = result.title
+    this.description = result.description
+  }
 }
